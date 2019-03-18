@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>My Site</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- <script>
+      window.goObject = new Promise(resolve => {
+        window.resolveGoObject = () => {
+          resolve(window.Go);
+        };
+      });
+    </script> -->
+    <script src="wasm_exec.js"></script>
+    <!-- <script src="wasm_exec.js" async></script> -->
+    <script>
+      (async () => {
+        const fetchP = fetch("hello.wasm");
+        // const go = new (await goObject)();
+        const go = new Go();
+        const { instance } = await WebAssembly.instantiateStreaming(
+          fetchP,
+          go.importObject
+        );
+        go.run(instance);
+      })();
+      // const go = new Go();
+      // WebAssembly.instantiateStreaming(
+      //   fetch("hello.wasm"),
+      //   go.importObject
+      // ).then(result => {
+      //   go.run(result.instance);
+      // });
+    </script>
+  </body>
+</html>
